@@ -32,7 +32,7 @@ export class K8sCluster extends pulumi.ComponentResource {
       {
         kubeconfig: readFileSync("./kubeconfig").toString(),
       },
-      { parent: this },
+      { parent: this, dependsOn: k3seCmd },
     );
     this.provider = provider;
   }

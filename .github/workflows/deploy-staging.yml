@@ -1,0 +1,38 @@
+name: Pulumi Deploy Staging
+
+on:
+  push:
+    branches:
+      - staging
+  workflow_dispatch:
+    branches:
+      - staging
+
+jobs:
+  up:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://stage.turingev.de
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Setup Node LTS ✨
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Installing dependencies 📦️
+        run: npm ci
+
+      - name: Applying infrastructure 🚀
+        uses: pulumi/actions@v4
+        with:
+          command: up
+          stack-name: deploy-cat/staging
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          PULUMI_CONFIG_PASSPHRASE: ${{ secrets.PULUMI_CONFIG_PASSPHRASE }}
