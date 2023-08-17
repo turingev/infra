@@ -1,0 +1,62 @@
+{
+    "_meta": {
+        "hostvars": {
+            "135.181.200.227": {
+                "ansible_user": "root",
+                "extra_agent_args": "",
+                "extra_server_args": "",
+                "k3s_version": "v1.22.3+k3s1",
+                "master_ip": "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}",
+                "systemd_dir": "/etc/systemd/system"
+            },
+            "37.27.10.67": {
+                "ansible_user": "root",
+                "extra_agent_args": "",
+                "extra_server_args": "",
+                "k3s_version": "v1.22.3+k3s1",
+                "master_ip": "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}",
+                "systemd_dir": "/etc/systemd/system"
+            },
+            "65.109.163.229": {
+                "ansible_user": "root",
+                "extra_agent_args": "",
+                "extra_server_args": "",
+                "k3s_version": "v1.22.3+k3s1",
+                "master_ip": "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}",
+                "systemd_dir": "/etc/systemd/system"
+            },
+            "65.21.109.11": {
+                "ansible_user": "root",
+                "extra_agent_args": "",
+                "extra_server_args": "",
+                "k3s_version": "v1.22.3+k3s1",
+                "master_ip": "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}",
+                "systemd_dir": "/etc/systemd/system"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "k3s_cluster"
+        ]
+    },
+    "k3s_cluster": {
+        "children": [
+            "master",
+            "node"
+        ]
+    },
+    "master": {
+        "hosts": [
+            "135.181.200.227",
+            "65.109.163.229"
+        ]
+    },
+    "node": {
+        "hosts": [
+            "37.27.10.67",
+            "65.21.109.11"
+        ]
+    }
+}

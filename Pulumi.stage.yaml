@@ -1,0 +1,10 @@
+encryptionsalt: v1:TONSdLoX3xs=:v1:pevtcB8yirfuz9wK:cekSb5qxmY28u0sRv4Eryq+UlWXebA==
+config:
+  digitalocean:token:
+    secure: v1:YWyBoxsMi2ZUNCQN:2/LbMaUyy9SYX4GyCVxrOZ3hG9yZFQT1nLbiRBwTwFVonm89oDu27hArNVWBMfs2BB0PY34Egd75ULuNo0Upgg589ozqHLoD2RdvgiI38pyQiidJQOJM
+  turingev:admin-email: admin+turingev@adb.sh
+  turingev:base-domain: stage.turingev.de
+  turingev:do-access-token:
+    secure: v1:lq2E8YQ4DAMpN5p6:rH+C8GKd0qy7Kntqvnpt4gvBBKVIQiF8cxS2bciEFkEoZ5bgxkDxuGvp//u/NmAGcGlZVo8V0ji1DLW7ILXyJAo3cja88hovbURY3cWcWuniQ4qc8ido
+  turingev:net-domain-prefix: net
+  turingev:root-domain: turingev.de

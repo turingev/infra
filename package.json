@@ -1,0 +1,15 @@
+{
+  "name": "pulumi-demo",
+  "main": "index.ts",
+  "devDependencies": {
+    "@types/node": "^16"
+  },
+  "dependencies": {
+    "@pulumi/command": "^0.8.1",
+    "@pulumi/digitalocean": "^4.19.3",
+    "@pulumi/kubernetes": "^3.28.1",
+    "@pulumi/kubernetesx": "^0.1.6",
+    "@pulumi/pulumi": "^3.68.0",
+    "fs": "^0.0.1-security"
+  }
+}
