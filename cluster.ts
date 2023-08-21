@@ -21,8 +21,8 @@ export class K8sCluster extends pulumi.ComponentResource {
     const k3seCmd = new command.local.Command(
       "k3seCmd",
       {
-        create: "k3se up ./k3se/stage.yml -k /dev/null",
-        update: "k3se up ./k3se/stage.yml -k /dev/null",
+        create: "k3se up ./k3se/stage.yml -k /tmp/k3se-kubeconfig",
+        update: "k3se up ./k3se/stage.yml -k /tmp/k3se-kubeconfig",
         delete: "k3se down ./k3se/stage.yml",
       },
       { parent: this },
