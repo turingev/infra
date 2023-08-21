@@ -37,6 +37,8 @@ jobs:
 
       - name: Setup k3se
         uses: nicklasfrahm/k3se@main
+        with:
+          command: --version
 
       - name: Applying infrastructure 🚀
         uses: pulumi/actions@v4
