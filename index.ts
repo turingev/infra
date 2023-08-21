@@ -79,8 +79,12 @@ const website = new Deployset("turingev-website", {
   issuer: letsencrypt.issuer,
 });
 
-// export const mailserver = new Mailserver(
-//   "turingev-mailsever",
-//   {},
-//   { provider, parent: k8sCluster },
-// );
+export const mailserver = new Mailu(
+  "turingev-mailsever",
+  {
+    domain: `mail.${config.require("base-domain")}`,
+    namespaceName: "mailu",
+    provider,
+  },
+  { parent: k8sCluster },
+);

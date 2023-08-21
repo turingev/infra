@@ -19,6 +19,14 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
+      - name: Setup SSH Keys
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.SSH_DEPLOY_KEY }}"
+          echo ${{ secrets.SSH_DEPLOY_KEY }} > /tmp/k3se-ssh-key
+
       - name: Setup Node LTS ✨
         uses: actions/setup-node@v3
         with:
@@ -27,6 +35,9 @@ jobs:
 
       - name: Installing dependencies 📦️
         run: npm ci
+
+      - name: Setup k3se
+        uses: nicklasfrahm/k3se@main
 
       - name: Applying infrastructure 🚀
         uses: pulumi/actions@v4

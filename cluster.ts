@@ -21,16 +21,25 @@ export class K8sCluster extends pulumi.ComponentResource {
     const k3seCmd = new command.local.Command(
       "k3seCmd",
       {
-        create: "./k3se-linux-amd64 up ./k3se/stage.yml -k ./kubeconfig",
-        delete: "./k3se-linux-amd64 down ./k3se/stage.yml",
+        create: "k3se up ./k3se/stage.yml -k /dev/null",
+        update: "k3se up ./k3se/stage.yml -k /dev/null",
+        delete: "k3se down ./k3se/stage.yml",
       },
       { parent: this },
+    );
+
+    const getKubeconfigCmd = new command.local.Command(
+      "getKubeconfigCmd",
+      {
+        create: "k3se up -s -k /tmp/k3se-kubeconfig ./k3se/stage.yml &> /dev/null && cat /tmp/k3se-kubeconfig",
+      },
+      { dependsOn: k3seCmd, parent: this },
     );
 
     const provider = new k8s.Provider(
       "k8sProvider",
       {
-        kubeconfig: readFileSync("./kubeconfig").toString(),
+        kubeconfig: getKubeconfigCmd.stdout,
       },
       { parent: this, dependsOn: k3seCmd },
     );

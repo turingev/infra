@@ -25,7 +25,7 @@ export class Mailu extends pulumi.ComponentResource {
       {
         metadata: { name: args.namespaceName },
       },
-      { provider: opts.provider, parent: this },
+      { dependsOn: args.provider, provider: args.provider, parent: this },
     );
 
     const mailuChart = new k8s.helm.v3.Release(
@@ -53,13 +53,13 @@ export class Mailu extends pulumi.ComponentResource {
           },
           persistence: {
             size: "10Gi",
-            storageClass: "fast",
+            storageClass: "rancher.io/local-path",
           },
           secretKey: "chang3m3!",
         },
         version: "1.2.0",
       },
-      { dependsOn: this, provider: opts.provider, parent: this },
+      { dependsOn: mailuNamespace, provider: args.provider, parent: this },
     );
 
     this.registerOutputs();
