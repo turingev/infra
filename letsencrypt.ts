@@ -8,7 +8,7 @@ export type LetsEncryptOptions = {
   solvers?: Array<any>;
 };
 
-const pulumiComponentNamespace: string = "turingev:CertManager";
+const pulumiComponentNamespace: string = "turingev:LetsEncrypt";
 
 export class LetsEncrypt extends pulumi.ComponentResource {
   public readonly issuer: k8s.apiextensions.CustomResource;
@@ -18,40 +18,33 @@ export class LetsEncrypt extends pulumi.ComponentResource {
     opts?: pulumi.ComponentResourceOptions,
   ) {
     super(pulumiComponentNamespace, name, args, opts);
-    this.issuer = newLetsEncrypt(name, args);
-  }
-}
-
-export function newLetsEncrypt(
-  name: string,
-  args: LetsEncryptOptions,
-): k8s.apiextensions.CustomResource {
-  return new k8s.apiextensions.CustomResource(
-    name,
-    {
-      apiVersion: "cert-manager.io/v1",
-      kind: "ClusterIssuer",
-      metadata: { name },
-      spec: {
-        acme: {
-          server: "https://acme-v02.api.letsencrypt.org/directory",
-          email: args.email,
-          privateKeySecretRef: {
-            name: "letsencrypt-account-key",
-          },
-          solvers: args.solvers ?? [
-            {
-              selector: {},
-              http01: {
-                ingress: {
-                  class: "traefik",
+    this.issuer = new k8s.apiextensions.CustomResource(
+      name,
+      {
+        apiVersion: "cert-manager.io/v1",
+        kind: "ClusterIssuer",
+        metadata: { name },
+        spec: {
+          acme: {
+            server: "https://acme-v02.api.letsencrypt.org/directory",
+            email: args.email,
+            privateKeySecretRef: {
+              name: "letsencrypt-account-key",
+            },
+            solvers: args.solvers ?? [
+              {
+                selector: {},
+                http01: {
+                  ingress: {
+                    class: "traefik",
+                  },
                 },
               },
-            },
-          ],
+            ],
+          },
         },
       },
-    },
-    { dependsOn: args.provider, provider: provider },
-  );
+      { dependsOn: args.provider, provider: provider, parent: this },
+    );
+  }
 }

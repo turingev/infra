@@ -18,22 +18,24 @@ export class K8sCluster extends pulumi.ComponentResource {
   ) {
     super(pulumiComponentNamespace, name, args, opts);
 
-    const k3seCmd = new command.local.Command(
-      "k3seCmd",
-      {
-        create: "k3se up ./k3se/stage.yml -k /tmp/k3se-kubeconfig",
-        update: "k3se up ./k3se/stage.yml -k /tmp/k3se-kubeconfig",
-        delete: "k3se down ./k3se/stage.yml",
-      },
-      { parent: this },
-    );
+    // TODO: debug cmd error 126 in pipeline
+    // const k3seCmd = new command.local.Command(
+    //   "k3seCmd",
+    //   {
+    //     create: "k3se up ./k3se/stage.yml -k /dev/null",
+    //     update: "k3se up ./k3se/stage.yml -k /dev/null",
+    //     delete: "k3se down ./k3se/stage.yml",
+    //   },
+    //   { parent: this },
+    // );
 
     const getKubeconfigCmd = new command.local.Command(
       "getKubeconfigCmd",
       {
-        create: "k3se up -s -k /tmp/k3se-kubeconfig ./k3se/stage.yml &> /dev/null && cat /tmp/k3se-kubeconfig",
+        create:
+          "k3se up -s -k /tmp/k3se-kubeconfig ./k3se/stage.yml &> /dev/null && cat /tmp/k3se-kubeconfig",
       },
-      { dependsOn: k3seCmd, parent: this },
+      { parent: this },
     );
 
     const provider = new k8s.Provider(
@@ -41,7 +43,7 @@ export class K8sCluster extends pulumi.ComponentResource {
       {
         kubeconfig: getKubeconfigCmd.stdout,
       },
-      { parent: this, dependsOn: k3seCmd },
+      { parent: this, dependsOn: getKubeconfigCmd },
     );
     this.provider = provider;
   }

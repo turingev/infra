@@ -23,10 +23,10 @@ export const dns = new DNSZone("turingev-dns", {
 export const k8sCluster = new K8sCluster("turingev-cluster", {}, {});
 export const provider = k8sCluster.provider;
 
-const dashboard = new Dasboard("turingev-dashboard", {
-  namespaceName: "kubernetes-dashboard",
-  provider,
-});
+// const dashboard = new Dasboard("turingev-dashboard", {
+//   namespaceName: "kubernetes-dashboard",
+//   provider,
+// });
 
 const secrets = new Secrets("turingev-secrets", { provider }, {});
 
@@ -67,7 +67,7 @@ const letsencrypt = new LetsEncrypt(
     solvers,
     provider,
   },
-  {},
+  { dependsOn: certManager, parent: certManager },
 );
 
 const website = new Deployset("turingev-website", {
@@ -79,12 +79,12 @@ const website = new Deployset("turingev-website", {
   issuer: letsencrypt.issuer,
 });
 
-export const mailserver = new Mailu(
-  "turingev-mailsever",
-  {
-    domain: `mail.${config.require("base-domain")}`,
-    namespaceName: "mailu",
-    provider,
-  },
-  { parent: k8sCluster },
-);
+// export const mailserver = new Mailu(
+//   "turingev-mailsever",
+//   {
+//     domain: `mail.${config.require("base-domain")}`,
+//     namespaceName: "mailu",
+//     provider,
+//   },
+//   { parent: k8sCluster },
+// );
