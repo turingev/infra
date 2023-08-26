@@ -3,15 +3,16 @@ import * as k8s from "@pulumi/kubernetes";
 
 export type DeploysetOptions = {
   provider: k8s.Provider;
-  namespace: string;
+  namespace: pulumi.Input<string>;
   labels?: Array<string>;
-  host: string;
-  port: number;
-  image: string;
+  host: pulumi.Input<string>;
+  port: pulumi.Input<number>;
+  image: pulumi.Input<string>;
   env?: Array<{
     name: pulumi.Input<string>;
     value?: pulumi.Input<string>;
   }>;
+  replicas?: pulumi.Input<number>;
   issuer: k8s.apiextensions.CustomResource;
 };
 
@@ -44,7 +45,7 @@ export class Deployset extends pulumi.ComponentResource {
           selector: {
             matchLabels: { name, host: args.host },
           },
-          replicas: 1,
+          replicas: args.replicas ?? 2,
           template: {
             metadata: {
               labels: { name, host: args.host },
