@@ -71,7 +71,7 @@ const letsencrypt = new LetsEncrypt(
 );
 
 const website = new Deployset("turingev-website", {
-  port: 80,
+  port: 9000,
   image: "ghcr.io/turingev/turingev-website:latest",
   host: config.require("base-domain"),
   namespace: "default",
