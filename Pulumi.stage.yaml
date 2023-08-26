@@ -7,4 +7,9 @@ config:
   turingev:do-access-token:
     secure: v1:lq2E8YQ4DAMpN5p6:rH+C8GKd0qy7Kntqvnpt4gvBBKVIQiF8cxS2bciEFkEoZ5bgxkDxuGvp//u/NmAGcGlZVo8V0ji1DLW7ILXyJAo3cja88hovbURY3cWcWuniQ4qc8ido
   turingev:net-domain-prefix: net
+  turingev:notify-email-from:
+    secure: v1:z273toHRxTG9p6/a:QgCi+WqXA3HkQL4oxFZaBpC7QNWO6Wr/PqT7
+  turingev:notify-email-password:
+    secure: v1:cM9RTuO5Nc5AvEsG:CeyCLFP8utfKnNRznDM3vs6OUWddH0AY0M2PMnzl
+  turingev:notify-email-server: mail.adb.sh
   turingev:root-domain: turingev.de

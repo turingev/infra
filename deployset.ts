@@ -8,10 +8,14 @@ export type DeploysetOptions = {
   host: string;
   port: number;
   image: string;
+  env?: Array<{
+    name: pulumi.Input<string>;
+    value?: pulumi.Input<string>;
+  }>;
   issuer: k8s.apiextensions.CustomResource;
 };
 
-const pulumiComponentNamespace: string = "turingev:K8sCluster";
+const pulumiComponentNamespace: string = "turingev:Deployset";
 
 export class Deployset extends pulumi.ComponentResource {
   provider: k8s.Provider;
@@ -26,8 +30,67 @@ export class Deployset extends pulumi.ComponentResource {
   ) {
     super(pulumiComponentNamespace, name, args, opts);
 
+    const deployment = new k8s.apps.v1.Deployment(
+      `${name}-deployment`,
+      {
+        apiVersion: "apps/v1",
+        kind: "Deployment",
+        metadata: {
+          name,
+          namespace: args.namespace,
+          labels: { name, host: args.host },
+        },
+        spec: {
+          selector: {
+            matchLabels: { name, host: args.host },
+          },
+          replicas: 1,
+          template: {
+            metadata: {
+              labels: { name, host: args.host },
+            },
+            spec: {
+              containers: [
+                {
+                  image: args.image,
+                  imagePullPolicy: "Always",
+                  name: `${name}-1`,
+                  env: args.env,
+                  ports: [
+                    {
+                      containerPort: args.port,
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      },
+      { dependsOn: args.provider, provider: args.provider, parent: this },
+    );
+
+    const service = new k8s.core.v1.Service(
+      `${name}-service`,
+      {
+        apiVersion: "v1",
+        kind: "Service",
+        metadata: {
+          name,
+          namespace: args.namespace,
+          labels: { name, host: args.host },
+        },
+        spec: {
+          selector: { name },
+          type: "ClusterIP",
+          ports: [{ name: "http", port: args.port }],
+        },
+      },
+      { dependsOn: deployment, provider: args.provider, parent: this },
+    );
+
     const ingress = new k8s.networking.v1.Ingress(
-      name,
+      `${name}-ingress`,
       {
         apiVersion: "networking.k8s.io/v1",
         kind: "Ingress",
@@ -67,69 +130,11 @@ export class Deployset extends pulumi.ComponentResource {
           ],
         },
       },
-      { dependsOn: args.provider, provider: args.provider, parent: this },
+      { dependsOn: service, provider: args.provider, parent: this },
     );
 
-    const deploymnet = new k8s.apps.v1.Deployment(
-      name,
-      {
-        apiVersion: "apps/v1",
-        kind: "Deployment",
-        metadata: {
-          name,
-          namespace: args.namespace,
-          labels: { name, host: args.host },
-        },
-        spec: {
-          selector: {
-            matchLabels: { name, host: args.host },
-          },
-          replicas: 1,
-          template: {
-            metadata: {
-              labels: { name, host: args.host },
-            },
-            spec: {
-              containers: [
-                {
-                  image: args.image,
-                  imagePullPolicy: "Always",
-                  name: `${name}-1`,
-                  ports: [
-                    {
-                      containerPort: args.port,
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        },
-      },
-      { dependsOn: args.provider, provider: args.provider, parent: this },
-    );
-
-    const service = new k8s.core.v1.Service(
-      name,
-      {
-        apiVersion: "v1",
-        kind: "Service",
-        metadata: {
-          name,
-          namespace: args.namespace,
-          labels: { name, host: args.host },
-        },
-        spec: {
-          selector: { name },
-          type: "ClusterIP",
-          ports: [{ name: "http", port: args.port }],
-        },
-      },
-      { dependsOn: args.provider, provider: args.provider, parent: this },
-    );
-
-    this.ingress = ingress;
-    this.deployment = deploymnet;
+    this.deployment = deployment;
     this.service = service;
+    this.ingress = ingress;
   }
 }

@@ -77,6 +77,24 @@ const website = new Deployset("turingev-website", {
   namespace: "default",
   provider: provider,
   issuer: letsencrypt.issuer,
+  env: [
+    {
+      name: "EMAIL_FROM",
+      value: config.requireSecret("notify-email-from"),
+    },
+    {
+      name: "EMAIL_TO",
+      value: config.require("admin-email"),
+    },
+    {
+      name: "EMAIL_SERVER",
+      value: config.require("notify-email-server"),
+    },
+    {
+      name: "EMAIL_PASSWORD",
+      value: config.requireSecret("notify-email-password"),
+    },
+  ],
 });
 
 // export const mailserver = new Mailu(
