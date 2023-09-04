@@ -51,8 +51,9 @@ export class Dasboard extends pulumi.ComponentResource {
               },
             ],
           },
+          protocolHttp: true,
           service: {
-            externalPort: 443,
+            externalPort: 80,
           },
 
           // for v3 major release
