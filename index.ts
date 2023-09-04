@@ -12,6 +12,7 @@ import { Deployset } from "./deployset";
 import { Secrets } from "./secrets";
 import { DNSZone } from "./dns";
 import { Dasboard } from "./dashboard";
+import { Longhorn } from "./longhorn";
 
 export const dns = new DNSZone("turingev-dns", {
   rootDomain: config.require("root-domain"),
@@ -68,6 +69,15 @@ const letsencrypt = new LetsEncrypt(
     provider,
   },
   { dependsOn: certManager, parent: certManager },
+);
+const longhorn = new Longhorn(
+  "turingev-longhorn",
+  {
+    host: `longhorn.${config.require("base-domain")}`,
+    issuer: letsencrypt.issuer,
+    provider,
+  },
+  { parent: k8sCluster },
 );
 
 const website = new Deployset("turingev-website", {

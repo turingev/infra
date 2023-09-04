@@ -18,8 +18,14 @@ export class DNSZone extends pulumi.ComponentResource {
   ) {
     super(pulumiComponentNamespace, name, args, opts);
 
-    new digitalocean.DnsRecord(args.baseDomain, {
+    new digitalocean.DnsRecord(`${args.baseDomain}`, {
       name: `${args.baseDomain}.`,
+      domain: args.rootDomain,
+      type: "A",
+      value: args.pulicIP,
+    });
+    new digitalocean.DnsRecord(`*.${args.baseDomain}`, {
+      name: `*.${args.baseDomain}.`,
       domain: args.rootDomain,
       type: "A",
       value: args.pulicIP,
