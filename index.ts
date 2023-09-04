@@ -24,11 +24,6 @@ export const dns = new DNSZone("turingev-dns", {
 export const k8sCluster = new K8sCluster("turingev-cluster", {}, {});
 export const provider = k8sCluster.provider;
 
-// const dashboard = new Dasboard("turingev-dashboard", {
-//   namespaceName: "kubernetes-dashboard",
-//   provider,
-// });
-
 const secrets = new Secrets("turingev-secrets", { provider }, {});
 
 const certManager = new CertManager(
@@ -70,11 +65,23 @@ const letsencrypt = new LetsEncrypt(
   },
   { dependsOn: certManager, parent: certManager },
 );
+
 const longhorn = new Longhorn(
   "turingev-longhorn",
   {
     host: `longhorn.${config.require("base-domain")}`,
     issuer: letsencrypt.issuer,
+    provider,
+  },
+  { parent: k8sCluster },
+);
+
+const dashboard = new Dasboard(
+  "turingev-dashboard",
+  {
+    namespaceName: "kubernetes-dashboard",
+    issuer: letsencrypt.issuer,
+    host: `dashboard.${config.require("base-domain")}`,
     provider,
   },
   { parent: k8sCluster },
