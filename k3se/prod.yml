@@ -25,3 +25,8 @@ nodes:
       host: 135.181.145.173
       user: root
       key-file: /tmp/k3se-ssh-key
+  - role: server
+    ssh:
+      host: 65.108.54.2
+      user: root
+      key-file: /tmp/k3se-ssh-key
