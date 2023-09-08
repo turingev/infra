@@ -8,6 +8,8 @@ export type K8sClusterOptions = {};
 
 const pulumiComponentNamespace: string = "turingev:K8sCluster";
 
+const stack = pulumi.getStack();
+
 export class K8sCluster extends pulumi.ComponentResource {
   provider: k8s.Provider;
 
@@ -32,8 +34,7 @@ export class K8sCluster extends pulumi.ComponentResource {
     const getKubeconfigCmd = new command.local.Command(
       "getKubeconfigCmd",
       {
-        create:
-          "k3se up -s -k /tmp/k3se-kubeconfig ./k3se/stage.yml &> /dev/null && cat /tmp/k3se-kubeconfig",
+        create: `k3se up -s -k /tmp/k3se-kubeconfig ./k3se/${stack}.yml &> /dev/null && cat /tmp/k3se-kubeconfig`,
       },
       { parent: this },
     );
