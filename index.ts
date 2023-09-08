@@ -18,7 +18,7 @@ export const dns = new DNSZone("turingev-dns", {
   rootDomain: config.require("root-domain"),
   baseDomain: config.require("base-domain"),
   netDomainPrefix: config.require("net-domain-prefix"),
-  pulicIP: "37.27.10.67",
+  pulicIP:config.require("public-ip"),
 });
 
 export const k8sCluster = new K8sCluster("turingev-cluster", {}, {});
@@ -101,7 +101,7 @@ const website = new Deployset("turingev-website", {
     },
     {
       name: "EMAIL_TO",
-      value: config.require("admin-email"),
+      value: config.require("notify-email-to"),
     },
     {
       name: "EMAIL_SERVER",

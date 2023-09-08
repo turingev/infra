@@ -13,3 +13,4 @@ config:
     secure: v1:cM9RTuO5Nc5AvEsG:CeyCLFP8utfKnNRznDM3vs6OUWddH0AY0M2PMnzl
   turingev:notify-email-server: mail.adb.sh
   turingev:root-domain: turingev.de
+  turingev:public-ip: 37.27.10.67
