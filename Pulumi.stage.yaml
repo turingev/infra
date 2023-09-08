@@ -12,5 +12,7 @@ config:
   turingev:notify-email-password:
     secure: v1:cM9RTuO5Nc5AvEsG:CeyCLFP8utfKnNRznDM3vs6OUWddH0AY0M2PMnzl
   turingev:notify-email-server: mail.adb.sh
-  turingev:root-domain: turingev.de
+  turingev:notify-email-to:
+    secure: v1:17f0bJq05tM+QLT4:S9txvMSnmiCUVpzwp5u7eJMlykfYt4il7m7FYhAwSlIkvUk=
   turingev:public-ip: 37.27.10.67
+  turingev:root-domain: turingev.de
