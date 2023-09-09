@@ -13,12 +13,13 @@ import { Secrets } from "./secrets";
 import { DNSZone } from "./dns";
 import { Dasboard } from "./dashboard";
 import { Longhorn } from "./longhorn";
+import { SSO } from "./authentik";
 
 export const dns = new DNSZone("turingev-dns", {
   rootDomain: config.require("root-domain"),
   baseDomain: config.require("base-domain"),
   netDomainPrefix: config.require("net-domain-prefix"),
-  pulicIP:config.require("public-ip"),
+  pulicIP: config.require("public-ip"),
 });
 
 export const k8sCluster = new K8sCluster("turingev-cluster", {}, {});
@@ -114,12 +115,13 @@ const website = new Deployset("turingev-website", {
   ],
 });
 
-// export const mailserver = new Mailu(
-//   "turingev-mailsever",
-//   {
-//     domain: `mail.${config.require("base-domain")}`,
-//     namespaceName: "mailu",
-//     provider,
-//   },
-//   { parent: k8sCluster },
-// );
+const sso = new SSO("authentik", {
+  issuer: letsencrypt.issuer,
+  namespace: "default",
+  provider: provider,
+  host: `sso.${config.require("base-domain")}`,
+  secret: config.requireSecret("authentik-secret"),
+  db: {
+    password: config.requireSecret("authentik-db-password"),
+  },
+});
