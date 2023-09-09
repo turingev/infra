@@ -79,7 +79,7 @@ export class SSO extends pulumi.ComponentResource {
             accessModes: ["ReadWriteOnce"],
           },
         },
-        version: "1.5.1",
+        version: "2023.8.2",
       },
       { dependsOn: this.namespace, provider: args.provider, parent: this },
     );
