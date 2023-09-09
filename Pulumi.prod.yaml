@@ -3,7 +3,7 @@ config:
   digitalocean:token:
     secure: v1:o3DlXxzbN5UFJQl8:TDtfYvn+BZFnE4QMSuqh2uVGuQrr4NWhmy8FyG7cEdbG3qE3iPV8aeDQtBulgxP+WjgiJOsR2mO+W9th8r9Nkbs+sgaVOXjoDKuP08ZWmGc0E0jmyz9E
   turingev:admin-email: admin+turingev@adb.sh
-  turingev:base-domain: prod.turingev.de
+  turingev:base-domain: turingev.de
   turingev:do-access-token:
     secure: v1:tIehApuRc+iwV6h1:HrW7w3MF01a15GGGsfgwdCPKDhro8/pHrRO3SbSbCR2+pOERh8wAgeGwaooQJdLjtKQwZ01DC9RLLeLwp6T0rF4oqdW9CvFC2EETAXrcbFHQAKzSdPcc
   turingev:net-domain-prefix: net
