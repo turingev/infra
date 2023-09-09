@@ -3,6 +3,10 @@ config:
   digitalocean:token:
     secure: v1:o3DlXxzbN5UFJQl8:TDtfYvn+BZFnE4QMSuqh2uVGuQrr4NWhmy8FyG7cEdbG3qE3iPV8aeDQtBulgxP+WjgiJOsR2mO+W9th8r9Nkbs+sgaVOXjoDKuP08ZWmGc0E0jmyz9E
   turingev:admin-email: admin+turingev@adb.sh
+  turingev:authentik-db-password:
+    secure: v1:f9Q2FBJzT8mRXt1y:JTJ1Is1PQt5K6wmZetGJLflw+orDhGqlApKESQ7PFLU=
+  turingev:authentik-secret:
+    secure: v1:vqsMNjyZ0LteYuhE:B4M4gDs00ap1TIAYLitdz7DYAHS0njUHD6TLvOn3RPdjOVEe45l1LVAgWXYS4deD2/Byv6avs0rcGLU9zgTRrKXH
   turingev:base-domain: turingev.de
   turingev:do-access-token:
     secure: v1:tIehApuRc+iwV6h1:HrW7w3MF01a15GGGsfgwdCPKDhro8/pHrRO3SbSbCR2+pOERh8wAgeGwaooQJdLjtKQwZ01DC9RLLeLwp6T0rF4oqdW9CvFC2EETAXrcbFHQAKzSdPcc
