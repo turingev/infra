@@ -14,6 +14,7 @@ import { DNSZone } from "./dns";
 import { Dasboard } from "./dashboard";
 import { Longhorn } from "./longhorn";
 import { SSO } from "./authentik";
+import { Jitsi } from "./jitsi";
 
 export const dns = new DNSZone("turingev-dns", {
   rootDomain: config.require("root-domain"),
@@ -125,3 +126,15 @@ const sso = new SSO("authentik", {
     password: config.requireSecret("authentik-db-password"),
   },
 });
+
+const jitsi = new Jitsi(
+  "jitsi-meet",
+  {
+    namespace: "default",
+    issuer: letsencrypt.issuer,
+    host: `meet.${config.require("base-domain")}`,
+    publicIP: config.require("public-ip"),
+    provider,
+  },
+  { parent: k8sCluster },
+);
