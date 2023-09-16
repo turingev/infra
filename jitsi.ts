@@ -47,12 +47,7 @@ export class Jitsi extends pulumi.ComponentResource {
               hosts: [
                 {
                   host: args.host,
-                  paths: [
-                    {
-                      path: "/",
-                      pathType: "Prefix",
-                    },
-                  ],
+                  paths: ["/"],
                 },
               ],
             },
