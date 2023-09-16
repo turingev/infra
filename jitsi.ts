@@ -32,28 +32,30 @@ export class Jitsi extends pulumi.ComponentResource {
           repo: "https://jitsi-contrib.github.io/jitsi-helm/",
         },
         values: {
-          ingress: {
-            enabled: true,
-            tls: [
-              {
-                secretName: `${args.host}-cert`,
-                hosts: [args.host],
+          web: {
+            ingress: {
+              enabled: true,
+              tls: [
+                {
+                  secretName: `${args.host}-cert`,
+                  hosts: [args.host],
+                },
+              ],
+              annotations: {
+                "cert-manager.io/cluster-issuer": args.issuer.metadata.name,
               },
-            ],
-            annotations: {
-              "cert-manager.io/cluster-issuer": args.issuer.metadata.name,
+              hosts: [
+                {
+                  host: args.host,
+                  paths: [
+                    {
+                      path: "/",
+                      pathType: "Prefix",
+                    },
+                  ],
+                },
+              ],
             },
-            hosts: [
-              {
-                host: args.host,
-                paths: [
-                  {
-                    path: "/",
-                    pathType: "Prefix",
-                  },
-                ],
-              },
-            ],
           },
           jvb: {
             publicIPs: [args.publicIP],
